@@ -1,6 +1,6 @@
 /*
 DataTeam
-databaseName Partitioning
+RateIQ2 Partitioning
 
 DBA:
 -Monitor Transaction Logs and Blocking throughout process
@@ -18,7 +18,7 @@ DBA:
 
 Run in DB01VPRD Equivilant 
 */
-USE databaseName
+USE RateIQ2
 GO
 
 --===================================================================================================
@@ -34,38 +34,164 @@ ELSE IF ( SELECT @@SERVERNAME ) = 'DATATEAM4-DB01\DB01' BEGIN PRINT 'Running in 
 ELSE BEGIN PRINT 'ERROR: Server name not found. Process stopped.'; RETURN; END;
 
 
---===================================================================================================
---[REMOVE FK]
---===================================================================================================
---PRINT '*****************';
---PRINT '*** Remove FK ***';
---PRINT '*****************';
+-- ===================================================================================================
+-- [REMOVE FK]
+-- ===================================================================================================
+PRINT '*****************';
+PRINT '*** Remove FK ***';
+PRINT '*****************';
 
 
-----************************************************
---PRINT 'Working on table [dbo].[tblLoadStop] ...'; 
+--************************************************
+PRINT 'Working on table [ChangeSet].[RatingDetail] ...'; 
 
---IF EXISTS (   SELECT 1
---              FROM   sys.foreign_keys
---              WHERE  name = 'FK_tblLoadStop_tblLoadCustomer'
---                AND  parent_object_id = OBJECT_ID( N'dbo.tblLoadStop' ))
---BEGIN
---    ALTER TABLE dbo.tblLoadStop DROP CONSTRAINT FK_tblLoadStop_tblLoadCustomer;
---    PRINT '- FK [FK_tblLoadStop_tblLoadCustomer] Dropped';
---END;
---ELSE IF EXISTS (   SELECT 1
---                   FROM   sys.foreign_keys
---                   WHERE  name = 'FK_tblLoadStop_tblLoadCustomer_LoadCustomerID'
---                     AND  parent_object_id = OBJECT_ID( N'dbo.tblLoadStop' ))
---	BEGIN
---	    ALTER TABLE dbo.tblLoadStop DROP CONSTRAINT FK_tblLoadStop_tblLoadCustomer_LoadCustomerID;
---	    PRINT '- FK [FK_tblLoadStop_tblLoadCustomer_LoadCustomerID] Dropped';
---	END;
---ELSE
---BEGIN
---    PRINT '!! WARNING: Foreign Key not found !!';
---END;
---GO
+IF EXISTS (   SELECT 1
+              FROM   sys.foreign_keys
+              WHERE  name = 'FK_RatingDetail_TariffPricing_TariffPricingId'
+                AND  parent_object_id = OBJECT_ID( N'ChangeSet.RatingDetail'))
+BEGIN
+    ALTER TABLE ChangeSet.RatingDetail DROP CONSTRAINT FK_RatingDetail_TariffPricing_TariffPricingId;
+    PRINT '- FK FK_RatingDetail_TariffPricing_TariffPricingId Dropped';
+END;
+ELSE IF EXISTS (   SELECT 1
+                   FROM   sys.foreign_keys
+                   WHERE  name = 'FK_ChangeSet_RatingDetail_ChangeSet_TariffPricing_TariffPricingId'
+                     AND  parent_object_id = OBJECT_ID( N'ChangeSet.RatingDetail' ))
+	BEGIN
+	    ALTER TABLE ChangeSet.RatingDetail DROP CONSTRAINT FK_ChangeSet_RatingDetail_ChangeSet_TariffPricing_TariffPricingId;
+	    PRINT '- FK [FK_ChangeSet_RatingDetail_ChangeSet_TariffPricing_TariffPricingId] Dropped' ;
+	END;
+ELSE
+BEGIN
+    PRINT '!! WARNING: Foreign Key not found !!';
+END;
+GO
+IF EXISTS (   SELECT 1
+              FROM   sys.foreign_keys
+              WHERE  name = 'FK_RatingDetail_RatingType_RatingTypeId'
+                AND  parent_object_id = OBJECT_ID( N'ChangeSet.RatingDetail'))
+BEGIN
+    ALTER TABLE ChangeSet.RatingDetail DROP CONSTRAINT FK_RatingDetail_RatingType_RatingTypeId;
+    PRINT '- FK FK_RatingDetail_RatingType_RatingTypeId Dropped';
+END;
+ELSE IF EXISTS (   SELECT 1
+                   FROM   sys.foreign_keys
+                   WHERE  name = 'FK_ChangeSet_RatingDetail_ChangeSet_RatingType_RatingTypeId'
+                     AND  parent_object_id = OBJECT_ID( N'ChangeSet.RatingDetail' ))
+	BEGIN
+	    ALTER TABLE ChangeSet.RatingDetail DROP CONSTRAINT FK_ChangeSet_RatingDetail_ChangeSet_RatingType_RatingTypeId;
+	    PRINT '- FK [FK_ChangeSet_RatingDetail_ChangeSet_RatingType_RatingTypeId] Dropped' ;
+	END;
+ELSE
+BEGIN
+    PRINT '!! WARNING: Foreign Key not found !!';
+END;
+GO
+IF EXISTS (   SELECT 1
+              FROM   sys.foreign_keys
+              WHERE  name = 'FK_RatingDetail_Rating_RatingId'
+                AND  parent_object_id = OBJECT_ID( N'ChangeSet.RatingDetail'))
+BEGIN
+    ALTER TABLE ChangeSet.RatingDetail DROP CONSTRAINT FK_RatingDetail_Rating_RatingId;
+    PRINT '- FK FK_RatingDetail_Rating_RatingId Dropped';
+END;
+ELSE IF EXISTS (   SELECT 1
+                   FROM   sys.foreign_keys
+                   WHERE  name = 'FK_ChangeSet_RatingDetail_ChangeSet_Rating_RatingId'
+                     AND  parent_object_id = OBJECT_ID( N'ChangeSet.RatingDetail' ))
+	BEGIN
+	    ALTER TABLE ChangeSet.RatingDetail DROP CONSTRAINT FK_ChangeSet_RatingDetail_ChangeSet_Rating_RatingId;
+	    PRINT '- FK [FK_ChangeSet_RatingDetail_ChangeSet_Rating_RatingId] Dropped' ;
+	END;
+ELSE
+BEGIN
+    PRINT '!! WARNING: Foreign Key not found !!';
+END;
+GO
+IF EXISTS (   SELECT 1
+              FROM   sys.foreign_keys
+              WHERE  name = 'FK_RatingDetail_PointsType_PointsTypeId'
+                AND  parent_object_id = OBJECT_ID( N'ChangeSet.RatingDetail'))
+BEGIN
+    ALTER TABLE ChangeSet.RatingDetail DROP CONSTRAINT FK_RatingDetail_PointsType_PointsTypeId;
+    PRINT '- FK FK_RatingDetail_PointsType_PointsTypeId Dropped';
+END;
+ELSE IF EXISTS (   SELECT 1
+                   FROM   sys.foreign_keys
+                   WHERE  name = 'FK_ChangeSet_RatingDetail_ChangeSet_PointsType_PointsTypeId'
+                     AND  parent_object_id = OBJECT_ID( N'ChangeSet.RatingDetail' ))
+	BEGIN
+	    ALTER TABLE ChangeSet.RatingDetail DROP CONSTRAINT FK_ChangeSet_RatingDetail_ChangeSet_PointsType_PointsTypeId;
+	    PRINT '- FK [FK_ChangeSet_RatingDetail_ChangeSet_PointsType_PointsTypeId] Dropped' ;
+	END;
+ELSE
+BEGIN
+    PRINT '!! WARNING: Foreign Key not found !!';
+END;
+GO
+IF EXISTS (   SELECT 1
+              FROM   sys.foreign_keys
+              WHERE  name = 'FK_RatingDetail_Fak_FakId'
+                AND  parent_object_id = OBJECT_ID( N'ChangeSet.RatingDetail'))
+BEGIN
+    ALTER TABLE ChangeSet.RatingDetail DROP CONSTRAINT FK_RatingDetail_Fak_FakId;
+    PRINT '- FK FK_RatingDetail_Fak_FakId Dropped';
+END;
+ELSE IF EXISTS (   SELECT 1
+                   FROM   sys.foreign_keys
+                   WHERE  name = 'FK_ChangeSet_RatingDetail_ChangeSet_Fak_FakId'
+                     AND  parent_object_id = OBJECT_ID( N'ChangeSet.RatingDetail' ))
+	BEGIN
+	    ALTER TABLE ChangeSet.RatingDetail DROP CONSTRAINT FK_ChangeSet_RatingDetail_ChangeSet_Fak_FakId;
+	    PRINT '- FK [FK_ChangeSet_RatingDetail_ChangeSet_Fak_FakId] Dropped' ;
+	END;
+ELSE
+BEGIN
+    PRINT '!! WARNING: Foreign Key not found !!';
+END;
+GO
+IF EXISTS (   SELECT 1
+              FROM   sys.foreign_keys
+              WHERE  name = 'FK_RatingDetail_DirectionType_DirectionTypeId'
+                AND  parent_object_id = OBJECT_ID( N'ChangeSet.RatingDetail'))
+BEGIN
+    ALTER TABLE ChangeSet.RatingDetail DROP CONSTRAINT FK_RatingDetail_DirectionType_DirectionTypeId;
+    PRINT '- FK FK_RatingDetail_DirectionType_DirectionTypeId Dropped';
+END;
+ELSE IF EXISTS (   SELECT 1
+                   FROM   sys.foreign_keys
+                   WHERE  name = 'FK_ChangeSet_RatingDetail_ChangeSet_DirectionType_DirectionTypeId'
+                     AND  parent_object_id = OBJECT_ID( N'ChangeSet.RatingDetail' ))
+	BEGIN
+	    ALTER TABLE ChangeSet.RatingDetail DROP CONSTRAINT FK_ChangeSet_RatingDetail_ChangeSet_DirectionType_DirectionTypeId;
+	    PRINT '- FK [FK_ChangeSet_RatingDetail_ChangeSet_DirectionType_DirectionTypeId] Dropped' ;
+	END;
+ELSE
+BEGIN
+    PRINT '!! WARNING: Foreign Key not found !!';
+END;
+GO
+IF EXISTS (   SELECT 1
+              FROM   sys.foreign_keys
+              WHERE  name = 'FK_RatingDetail_BreakPricing_BreakPricingId'
+                AND  parent_object_id = OBJECT_ID( N'ChangeSet.RatingDetail'))
+BEGIN
+    ALTER TABLE ChangeSet.RatingDetail DROP CONSTRAINT FK_RatingDetail_BreakPricing_BreakPricingId;
+    PRINT '- FK FK_RatingDetail_BreakPricing_BreakPricingId Dropped';
+END;
+ELSE IF EXISTS (   SELECT 1
+                   FROM   sys.foreign_keys
+                   WHERE  name = 'FK_ChangeSet_RatingDetail_ChangeSet_BreakPricing_BreakPricingId'
+                     AND  parent_object_id = OBJECT_ID( N'ChangeSet.RatingDetail' ))
+	BEGIN
+	    ALTER TABLE ChangeSet.RatingDetail DROP CONSTRAINT FK_ChangeSet_RatingDetail_ChangeSet_BreakPricing_BreakPricingId;
+	    PRINT '- FK [FK_ChangeSet_RatingDetail_ChangeSet_BreakPricing_BreakPricingId] Dropped' ;
+	END;
+ELSE
+BEGIN
+    PRINT '!! WARNING: Foreign Key not found !!';
+END;
+GO
 
 
 --===================================================================================================
@@ -76,16 +202,16 @@ PRINT '*** Remove PK/Clustered ***';
 PRINT '***************************';
 
 --************************************************
-PRINT 'Working on table [schemaName].[tableName] ...';
+PRINT 'Working on table [ChangeSet].[RatingDetail] ...';
 
 IF EXISTS (   SELECT 1
               FROM   sys.objects
               WHERE  type_desc = 'PRIMARY_KEY_CONSTRAINT'
-                AND  parent_object_id = OBJECT_ID( N'schemaName.tableName' )
+                AND  parent_object_id = OBJECT_ID( N'ChangeSet.RatingDetail' )
 				AND  name = N'PUT PK NAME HERE'
           )
 BEGIN    
-	ALTER TABLE schemaName.tableName DROP CONSTRAINT --PK_tblLoadCustomer;
+	ALTER TABLE ChangeSet.RatingDetail DROP CONSTRAINT PK_tblLoadCustomer;
     PRINT '- PK [PUT PK NAME HERE] Dropped';
 END;
 
@@ -98,14 +224,14 @@ END;
 --PRINT '*****************************';
 
 ----************************************************
---PRINT 'Working on table [dbo].[tblLoadStop] ...';
+--PRINT 'Working on table [ChangeSet].[RatingDetail] ...';
 
 --IF NOT EXISTS (	SELECT 1
 --				FROM sys.columns
 --				WHERE name = 'CreatedDate'
---				AND object_id = OBJECT_ID(N'dbo.tblLoadStop'))
+--				AND object_id = OBJECT_ID(N'ChangeSet.RatingDetail'))
 --BEGIN
---	ALTER TABLE dbo.tblLoadStop
+--	ALTER TABLE ChangeSet.RatingDetail
 --	ADD CreatedDate DATETIME NULL
 --	PRINT '- Column [CreatedDate] Created';
 --END;
@@ -120,7 +246,7 @@ END;
 --PRINT '**********************';
 
 ----************************************************
---PRINT 'Working on table [dbo].[tblLoadStop] ...';
+--PRINT 'Working on table [ChangeSet].[RatingDetail] ...';
 
 --BEGIN TRY
 --	IF OBJECT_ID('tempdb..#LoadStopCreatedDate') IS NOT	NULL DROP TABLE #LoadStopCreatedDate;
@@ -129,13 +255,13 @@ END;
 --	WITH FirstLoadStopDate AS
 --	(
 --		SELECT LoadCustomerID, MIN(StopDate) AS StopDate
---		FROM dbo.tblLoadStop
+--		FROM ChangeSet.RatingDetail
 --		GROUP BY LoadCustomerID
 --		HAVING MIN(StopDate) IS NOT NULL
 --	)
 --	INSERT INTO #LoadStopCreatedDate(LoadStopID, CreatedDate)
 --	SELECT ls.LoadStopID, CASE WHEN ls.StopDate IS NULL THEN flsd.StopDate ELSE ls.StopDate END AS CreatedDate
---	FROM dbo.tblLoadStop ls
+--	FROM ChangeSet.RatingDetail ls
 --	INNER JOIN FirstLoadStopDate flsd ON ls.LoadCustomerID = flsd.LoadCustomerID
 
 --	CREATE NONCLUSTERED INDEX IX_#LoadStopCreatedDate_LoadStopID_Incl
@@ -156,7 +282,7 @@ END;
 
 --		UPDATE ls
 --		SET ls.CreatedDate = lscd.CreatedDate
---		FROM dbo.tblLoadStop ls
+--		FROM ChangeSet.RatingDetail ls
 --		INNER JOIN #LoadStopCreatedDate lscd ON ls.LoadStopID = lscd.LoadStopID
 --		WHERE lscd.LoadStopCreatedDateID BETWEEN @LoopCt + 1 AND @LoopCt + @BatchCt;
 
@@ -166,11 +292,11 @@ END;
 --	END
 	
 --	BEGIN TRANSACTION
---		UPDATE dbo.tblLoadStop
+--		UPDATE ChangeSet.RatingDetail
 --		SET CreatedDate = '1753-01-01 00:00:00.000'
 --		WHERE CreatedDate IS NULL
 
---		UPDATE dbo.tblLoadCustomer
+--		UPDATE ChangeSet.tblLoadCustomer
 --		SET CreateDate = '1753-01-01 00:00:00.000'
 --		WHERE CreateDate IS NULL
 --	COMMIT TRANSACTION
@@ -195,33 +321,33 @@ PRINT '*** Alter NULL Column And Add DF ***';
 PRINT '************************************';
 
 --******************************************************
-PRINT 'Working on table [dbo].[tblLoadCustomer] ...';
+PRINT 'Working on table [ChangeSet].[tblLoadCustomer] ...';
 
 IF EXISTS (   SELECT 1
                   FROM   sys.default_constraints
                   WHERE  name = 'CONSTRAINT NAME'
-                    AND  parent_object_id = OBJECT_ID( N'schemaName.tableName' ))
+                    AND  parent_object_id = OBJECT_ID( N'ChangeSet.RatingDetail' ))
 BEGIN
-    ALTER TABLE schemaName.tableName DROP CONSTRAINT CONSTRAINTNAME
+    ALTER TABLE ChangeSet.RatingDetail DROP CONSTRAINT CONSTRAINTNAME
     PRINT '- DF [CONSTRAINT NAME] Dropped';
 END;
 
 IF EXISTS (   SELECT 1
               FROM   sys.columns
               WHERE  name = 'columnName'
-                AND  object_id = OBJECT_ID( N'schemaName.tableName' )
+                AND  object_id = OBJECT_ID( N'ChangeSet.RatingDetail' )
                 AND  is_nullable = 1 )
 BEGIN
-    ALTER TABLE schemaName.tableName ALTER COLUMN columnName DATETIME NOT NULL;
+    ALTER TABLE ChangeSet.RatingDetail ALTER COLUMN columnName DATETIME NOT NULL;
     PRINT '- Column [columnName] Changed to Not Null';
 END;
 
 IF NOT EXISTS (   SELECT 1
                   FROM   sys.default_constraints
                   WHERE  name = 'CONSTRAINT NAME'
-                    AND  parent_object_id = OBJECT_ID( N'schemaName.tableName' ))
+                    AND  parent_object_id = OBJECT_ID( N'ChangeSet.RatingDetail' ))
 BEGIN
-    ALTER TABLE schemaName.tableName ADD CONSTRAINT CONSTRAINTNAME DEFAULT GETDATE() FOR columnName;
+    ALTER TABLE ChangeSet.RatingDetail ADD CONSTRAINT CONSTRAINTNAME DEFAULT GETDATE() FOR columnName;
     PRINT '- DF [CONSTRAINT NAME] Created';
 END;
 GO
@@ -234,18 +360,18 @@ PRINT '*** Create Clustered Index ***';
 PRINT '******************************';
 
 --************************************************
-PRINT 'Working on table [schemaName].[tableName] ...';
+PRINT 'Working on table [ChangeSet].[RatingDetail] ...';
 
-IF EXISTS ( SELECT 1 FROM sys.sysindexes WHERE name = 'CIX_tableName_columnName' )
+IF EXISTS ( SELECT 1 FROM sys.sysindexes WHERE name = 'CIX_RatingDetail_columnName' )
 BEGIN
-    DROP INDEX CIX_tableName_columnName ON schemaName.tableName;
-	PRINT '- Index [CIX_tableName_columnName] Dropped';
+    DROP INDEX CIX_RatingDetail_columnName ON ChangeSet.RatingDetail;
+	PRINT '- Index [CIX_RatingDetail_columnName] Dropped';
 END;
 
-CREATE CLUSTERED INDEX CIX_tableName_columnName
-ON schemaName.tableName ( columnName ASC )
-WITH ( SORT_IN_TEMPDB = ON, ONLINE = ON ) ON PS_databaseName_partitionColumnType_partitionRange(columnName);
-PRINT '- Index [CIX_tableName_columnName] Created';
+CREATE CLUSTERED INDEX CIX_RatingDetail_columnName
+ON ChangeSet.RatingDetail ( columnName ASC )
+WITH ( SORT_IN_TEMPDB = ON, ONLINE = ON ) ON PS_RateIQ2_partitionColumnType_partitionRange(columnName);
+PRINT '- Index [CIX_RatingDetail_columnName] Created';
 
 
 --===================================================================================================
@@ -256,19 +382,19 @@ PRINT '*** Create PKs ***';
 PRINT '******************';
 
 --************************************************
-PRINT 'Working on table [schemaName].[tableName] ...';
+PRINT 'Working on table [ChangeSet].[RatingDetail] ...';
 
-IF EXISTS ( SELECT 1 FROM sys.sysindexes WHERE name = 'PK_tableName_originalPrimaryKeyColumnName_columnName' )
+IF EXISTS ( SELECT 1 FROM sys.sysindexes WHERE name = 'PK_RatingDetail_originalPrimaryKeyColumnName_columnName' )
 BEGIN
-    ALTER TABLE schemaName.tableName DROP CONSTRAINT PK_tableName_originalPrimaryKeyColumnName_columnName;
-	PRINT '- PK [PK_tableName_originalPrimaryKeyColumnName_columnName] Dropped';
+    ALTER TABLE ChangeSet.RatingDetail DROP CONSTRAINT PK_RatingDetail_originalPrimaryKeyColumnName_columnName;
+	PRINT '- PK [PK_RatingDetail_originalPrimaryKeyColumnName_columnName] Dropped';
 END;
 
-ALTER TABLE schemaName.tableName
-ADD CONSTRAINT PK_tableName_originalPrimaryKeyColumnName_columnName
+ALTER TABLE ChangeSet.RatingDetail
+ADD CONSTRAINT PK_RatingDetail_originalPrimaryKeyColumnName_columnName
     PRIMARY KEY NONCLUSTERED ( originalPrimaryKeyColumnName, columnName)
-    WITH ( SORT_IN_TEMPDB = ON, ONLINE = ON ) ON PS_databaseName_partitionColumnType_partitionRange(columnName);
-PRINT '- PK [PK_tableName_originalPrimaryKeyColumnName_columnName] Created';
+    WITH ( SORT_IN_TEMPDB = ON, ONLINE = ON ) ON PS_RateIQ2_partitionColumnType_partitionRange(columnName);
+PRINT '- PK [PK_RatingDetail_originalPrimaryKeyColumnName_columnName] Created';
 
 
 --===================================================================================================
@@ -279,16 +405,16 @@ PRINT '- PK [PK_tableName_originalPrimaryKeyColumnName_columnName] Created';
 --PRINT '***************************';
 
 ----************************************************
---PRINT 'Working on table [dbo].[tblLoadCustomer] ...';
+--PRINT 'Working on table [ChangeSet].[tblLoadCustomer] ...';
 
 --IF EXISTS ( SELECT 1 FROM sys.sysindexes WHERE name = 'UX_tblLoadCustomer_LoadCustomerID' )
 --BEGIN
---    DROP INDEX UX_tblLoadCustomer_LoadCustomerID ON dbo.tblLoadCustomer;
+--    DROP INDEX UX_tblLoadCustomer_LoadCustomerID ON ChangeSet.tblLoadCustomer;
 --	PRINT '- Index [UX_tblLoadCustomer_LoadCustomerID] Dropped';
 --END;
 
 --CREATE UNIQUE NONCLUSTERED INDEX UX_tblLoadCustomer_LoadCustomerID
---ON dbo.tblLoadCustomer ( LoadCustomerID )
+--ON ChangeSet.tblLoadCustomer ( LoadCustomerID )
 --WITH ( SORT_IN_TEMPDB = ON, ONLINE = ON ) ON [PRIMARY];
 --PRINT '- Index [UX_tblLoadCustomer_LoadCustomerID] Created';
 --GO
@@ -302,18 +428,18 @@ PRINT '- PK [PK_tableName_originalPrimaryKeyColumnName_columnName] Created';
 --PRINT '*****************';
 
 ----*****************************************************
---PRINT 'Working on table [dbo].[tblLoadStop] ...';
+--PRINT 'Working on table [ChangeSet].[RatingDetail] ...';
 
---ALTER TABLE dbo.tblLoadStop WITH NOCHECK
---ADD CONSTRAINT FK_tblLoadStop_tblLoadCustomer_LoadCustomerID
+--ALTER TABLE ChangeSet.RatingDetail WITH NOCHECK
+--ADD CONSTRAINT FK_RatingDetail_tblLoadCustomer_LoadCustomerID
 --    FOREIGN KEY ( LoadCustomerID )
---    REFERENCES dbo.tblLoadCustomer ( LoadCustomerID ) 
+--    REFERENCES ChangeSet.tblLoadCustomer ( LoadCustomerID ) 
 --	ON DELETE CASCADE
 --	ON UPDATE CASCADE;
---PRINT '- FK [FK_tblLoadStop_tblLoadCustomer_LoadCustomerID] Created';
+--PRINT '- FK [FK_RatingDetail_tblLoadCustomer_LoadCustomerID] Created';
 
---ALTER TABLE dbo.tblLoadStop CHECK CONSTRAINT FK_tblLoadStop_tblLoadCustomer_LoadCustomerID;
---PRINT '- FK [FK_tblLoadStop_tblLoadCustomer_LoadCustomerID] Enabled';
+--ALTER TABLE ChangeSet.RatingDetail CHECK CONSTRAINT FK_RatingDetail_tblLoadCustomer_LoadCustomerID;
+--PRINT '- FK [FK_RatingDetail_tblLoadCustomer_LoadCustomerID] Enabled';
 --GO
 
 --===================================================================================================
@@ -324,9 +450,9 @@ PRINT '*** Update Stats ***';
 PRINT '********************';
 
 --************************************************
-PRINT 'Working on table [schemaName].[tableName] ...';
+PRINT 'Working on table [ChangeSet].[RatingDetail] ...';
 
-UPDATE STATISTICS schemaName.tableName;
+UPDATE STATISTICS ChangeSet.RatingDetail;
 PRINT '- Statistics Updated';
 
 

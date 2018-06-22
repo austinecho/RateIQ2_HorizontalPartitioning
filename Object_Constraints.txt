@@ -1,0 +1,220 @@
+NOTES:
+Change DB project
+Check if UQ index is needed for PKs (if it isn't identity)
+
+**** DB01  ****
+
+** ChangeSet.RatingDetail **
+Date Column: CreateDate (1 year)
+Clustered Index: CIX_ChangeSet_RatingDetail_EffectiveDate
+
+-- Current --
+
+- PK
+	PK_RatingDetail
+	
+- FK
+	FK_RatingDetail_BreakPricing_BreakPricingId
+	FK_RatingDetail_DirectionType_DirectionTypeId
+	FK_RatingDetail_Fak_FakId
+	FK_RatingDetail_PointsType_PointsTypeId
+	FK_RatingDetail_Rating_RatingId
+	FK_RatingDetail_RatingType_RatingTypeId
+	FK_RatingDetail_TariffPricing_TariffPricingId
+	
+- Index
+	
+	
+- Constraint
+	N/A
+
+-- New --
+- PK
+	PK_ChangeSet_RatingDetail_RatingDetailId_EffectiveDate
+	
+- FK
+	FK_ChangeSet_RatingDetail_ChangeSet_BreakPricing_BreakPricingId
+	FK_ChangeSet_RatingDetail_ChangeSet_DirectionType_DirectionTypeId
+	FK_ChangeSet_RatingDetail_ChangeSet_Fak_FakId
+	FK_ChangeSet_RatingDetail_ChangeSet_PointsType_PointsTypeId
+	FK_ChangeSet_RatingDetail_ChangeSet_Rating_RatingId
+	FK_ChangeSet_RatingDetail_ChangeSet_RatingType_RatingTypeId
+	FK_ChangeSet_RatingDetail_ChangeSet_TariffPricing_TariffPricingId
+	
+- Index
+	
+	
+- Constraint
+	N/A
+
+** Production.RatingDetail **
+Date Column: SubmittedDate (2 years)
+Clustered Index: CIX_Production_RatingDetail_EffectiveDate
+
+-- Current --
+
+- PK
+	PK_RatingDetail
+
+- FK
+	N/A
+	
+- Index
+	N/A
+	
+- Constraint
+	N/A
+
+-- New --
+- PK
+	PK_Production_RatingDetail_RatingDetailId_EffectiveDate
+	
+- FK
+	N/A
+	
+- Index
+	N/A
+	
+- Constraint
+	N/A
+
+** Backup.RatingDetail **
+Date Column: SubmittedDate (2 years)
+Clustered Index: CIX_Backup_RatingDetail_EffectiveDate
+
+-- Current --
+
+- PK
+	PK_Backup_RatingDetail_RatingDetailId_EffectiveDate
+
+- FK
+	N/A
+	
+- Index
+	N/A
+	
+- Constraint
+	N/A
+
+-- New --
+- PK
+	PK_FastLaneDocs_FastLaneDocId_SubmittedDate
+	
+- FK
+	N/A
+	
+- Index
+	N/A
+	
+- Constraint
+	N/A
+
+--====================================================================================================================
+--====================================================================================================================
+
+**** DataTeam4 ****
+
+** ChangeSet.RatingDetail **
+Date Column: CreateDate (1 year)
+Clustered Index: CIX_ChangeSet_RatingDetail_EffectiveDate
+
+-- Current --
+
+- PK
+	PK_RatingDetail
+	
+- FK
+	FK_RatingDetail_BreakPricing_BreakPricingId
+	FK_RatingDetail_DirectionType_DirectionTypeId
+	FK_RatingDetail_Fak_FakId
+	FK_RatingDetail_PointsType_PointsTypeId
+	FK_RatingDetail_Rating_RatingId
+	FK_RatingDetail_RatingType_RatingTypeId
+	FK_RatingDetail_TariffPricing_TariffPricingId
+	
+- Index
+	
+	
+- Constraint
+	N/A
+
+-- New --
+- PK
+	PK_ChangeSet_RatingDetail_RatingDetailId_EffectiveDate
+	
+- FK
+	FK_ChangeSet_RatingDetail_ChangeSet_BreakPricing_BreakPricingId
+	FK_ChangeSet_RatingDetail_ChangeSet_DirectionType_DirectionTypeId
+	FK_ChangeSet_RatingDetail_ChangeSet_Fak_FakId
+	FK_ChangeSet_RatingDetail_ChangeSet_PointsType_PointsTypeId
+	FK_ChangeSet_RatingDetail_ChangeSet_Rating_RatingId
+	FK_ChangeSet_RatingDetail_ChangeSet_RatingType_RatingTypeId
+	FK_ChangeSet_RatingDetail_ChangeSet_TariffPricing_TariffPricingId
+	
+- Index
+	
+	
+- Constraint
+	N/A
+
+** Production.RatingDetail **
+Date Column: SubmittedDate (2 years)
+Clustered Index: CIX_Production_RatingDetail_EffectiveDate
+
+-- Current --
+
+- PK
+	PK_RatingDetail
+
+- FK
+	N/A
+	
+- Index
+	N/A
+	
+- Constraint
+	N/A
+
+-- New --
+- PK
+	PK_Production_RatingDetail_RatingDetailId_EffectiveDate
+	
+- FK
+	N/A
+	
+- Index
+	N/A
+	
+- Constraint
+	N/A
+
+** Backup.RatingDetail **
+Date Column: SubmittedDate (2 years)
+Clustered Index: CIX_Backup_RatingDetail_EffectiveDate
+
+-- Current --
+
+- PK
+	PK_Backup_RatingDetail_RatingDetailId_EffectiveDate
+
+- FK
+	N/A
+	
+- Index
+	N/A
+	
+- Constraint
+	N/A
+
+-- New --
+- PK
+	PK_FastLaneDocs_FastLaneDocId_SubmittedDate
+	
+- FK
+	N/A
+	
+- Index
+	N/A
+	
+- Constraint
+	N/A
