@@ -1,6 +1,6 @@
 USE RateIQ2;
 
-DECLARE @TableNameFind VARCHAR(128) = 'RatingDetail'
+DECLARE @TableNameFind VARCHAR(128) = 'RatingDetail';
 
 IF OBJECT_ID('tempdb..#Temp') IS NOT NULL
     DROP TABLE #Temp;
@@ -25,9 +25,10 @@ FROM    sys.indexes i
                               AND ic.column_id = c.column_id
         JOIN sys.tables AS t ON i.object_id = t.object_id
         JOIN sys.schemas AS s ON t.schema_id = s.schema_id
-WHERE   (t.name = @TableNameFind
-        OR @TableNameFind IS NULL)
-		AND i.type_desc = 'NONCLUSTERED'
+WHERE   ( t.name = @TableNameFind
+          OR @TableNameFind IS NULL
+        )
+        AND i.type_desc = 'NONCLUSTERED'
         AND i.is_primary_key = 0
         AND i.is_unique = 0
         AND i.is_unique_constraint = 0
@@ -70,11 +71,11 @@ CREATE TABLE #Indexes
     (
       ID INT IDENTITY(1, 1) ,
       OldIndexName VARCHAR(128) ,
-      NewIndexName VARCHAR(128),
-	  SchemaName VARCHAR(128),
-	  TableName VARCHAR(128),
-	  IndexOnColumns VARCHAR(MAX) NULL,
-	  IsProcessed BIT DEFAULT 0
+      NewIndexName VARCHAR(128) ,
+      SchemaName VARCHAR(128) ,
+      TableName VARCHAR(128) ,
+      IndexOnColumns VARCHAR(MAX) NULL ,
+      IsProcessed BIT DEFAULT 0
     );
 
 DECLARE @SchemaName VARCHAR(128);
@@ -131,11 +132,15 @@ WHILE @ProcessedCount > 0
             END;
 
         INSERT  INTO #Indexes
-                ( OldIndexName, NewIndexName, SchemaName, TableName )
+                ( OldIndexName ,
+                  NewIndexName ,
+                  SchemaName ,
+                  TableName
+                )
                 SELECT  @IndexName ,
-                        @FinalIndex,
-						@SchemaName,
-						@TableName;
+                        @FinalIndex ,
+                        @SchemaName ,
+                        @TableName;
 
         UPDATE  #IndexBreakDown
         SET     IsProcessed = 1
@@ -149,104 +154,97 @@ WHILE @ProcessedCount > 0
 
     END;
 
---SELECT  ID ,
---        OldIndexName ,
---        NewIndexName
---FROM    #Indexes
---WHERE   OldIndexName <> NewIndexName;
-
-
---SELECT *
---FROM #Temp
-
---SELECT *
---FROM #IndexBreakDown
-
 --============================================
 -- Create Index
 --============================================
 IF OBJECT_ID('tempdb..#IndexScript') IS NOT NULL
     DROP TABLE #IndexScript;
 
-CREATE TABLE #IndexScript
-(
-	Script VARCHAR(MAX)
-)
+CREATE TABLE #IndexScript ( Script VARCHAR(MAX) );
 
-DECLARE @ColumnNames VARCHAR(MAX)
-DECLARE @NewProcessCount INT = 1
-DECLARE @ID INT 
+DECLARE @ColumnNames VARCHAR(MAX);
+DECLARE @NewProcessCount INT = 1;
+DECLARE @ID INT; 
 
-DECLARE @NewIndexName VARCHAR(128)
-DECLARE @IncludeColumns VARCHAR(MAX)
+DECLARE @NewIndexName VARCHAR(128);
+DECLARE @IncludeColumns VARCHAR(MAX);
 
 WHILE @NewProcessCount > 0
-BEGIN 
+    BEGIN 
 
-SET @SchemaName = NULL
-SET @TableName = NULL
-SET @PrefixSchemaTable = NULL 
-SET @IndexName = NULL 
-SET @ColumnNames = NULL 
-SET @ID = NULL 
-SET @NewIndexName = NULL
-SET @IncludeColumns = NULL  
+        SET @SchemaName = NULL;
+        SET @TableName = NULL;
+        SET @PrefixSchemaTable = NULL; 
+        SET @IndexName = NULL; 
+        SET @ColumnNames = NULL; 
+        SET @ID = NULL; 
+        SET @NewIndexName = NULL;
+        SET @IncludeColumns = NULL;  
 
-SELECT TOP 1 @IndexName = OldIndexName, @ID = ID, @SchemaName = SchemaName, @TableName = TableName, @NewIndexName = NewIndexName
-FROM #Indexes
-WHERE IsProcessed = 0
+        SELECT TOP 1
+                @IndexName = OldIndexName ,
+                @ID = ID ,
+                @SchemaName = SchemaName ,
+                @TableName = TableName ,
+                @NewIndexName = NewIndexName
+        FROM    #Indexes
+        WHERE   IsProcessed = 0;
 
-SET @PrefixSchemaTable = @SchemaName + '.' + @TableName
+        SET @PrefixSchemaTable = @SchemaName + '.' + @TableName;
 
-SELECT  @ColumnNames = COALESCE(@ColumnNames + ', ', '') + ColumnName
-FROM #Temp AS T
-INNER JOIN #Indexes AS I
-ON T.IndexName = I.OldIndexName
-AND T.SchemaName = I.SchemaName
-AND T.TableName = I.TableName
-WHERE I.ID = @ID
-AND T.is_included_column = 0
+        SELECT  @ColumnNames = COALESCE(@ColumnNames + ', ', '') + ColumnName
+        FROM    #Temp AS T
+                INNER JOIN #Indexes AS I ON T.IndexName = I.OldIndexName
+                                            AND T.SchemaName = I.SchemaName
+                                            AND T.TableName = I.TableName
+        WHERE   I.ID = @ID
+                AND T.is_included_column = 0;
 
-SELECT  @IncludeColumns = COALESCE(@IncludeColumns + '_', '') + ColumnName
-FROM    #Temp AS T
-INNER JOIN #Indexes AS I
-ON T.IndexName = I.OldIndexName
-AND T.SchemaName = I.SchemaName
-AND T.TableName = I.TableName
-WHERE I.ID = @ID
-AND is_included_column = 1;
+        SELECT  @IncludeColumns = COALESCE(@IncludeColumns + '_', '')
+                + ColumnName
+        FROM    #Temp AS T
+                INNER JOIN #Indexes AS I ON T.IndexName = I.OldIndexName
+                                            AND T.SchemaName = I.SchemaName
+                                            AND T.TableName = I.TableName
+        WHERE   I.ID = @ID
+                AND is_included_column = 1;
 
-IF @IncludeColumns IS NULL 
-BEGIN
+        IF @IncludeColumns IS NULL
+            BEGIN
 
-INSERT INTO #IndexScript
-        ( Script )
-SELECT '
+                INSERT  INTO #IndexScript
+                        ( Script
+                        )
+                        SELECT  '
 CREATE NONCLUSTERED INDEX ' + @NewIndexName + ' ON ' + @PrefixSchemaTable + '
-( ' + @ColumnNames + ')'
+( ' + @ColumnNames + ')';
 
-END
+            END;
 
-IF @IncludeColumns IS NOT NULL 
-BEGIN
+        IF @IncludeColumns IS NOT NULL
+            BEGIN
 
-INSERT INTO #IndexScript
-        ( Script )
-SELECT '
+                INSERT  INTO #IndexScript
+                        ( Script
+                        )
+                        SELECT  '
 CREATE NONCLUSTERED INDEX ' + @NewIndexName + ' ON ' + @PrefixSchemaTable + '
-( ' + @ColumnNames + ') INCLUDE (' + @IncludeColumns + ')'
+( ' + @ColumnNames + ') INCLUDE (' + @IncludeColumns + ')';
 
-END
+            END;
 
 
 
-UPDATE #Indexes
-SET IsProcessed = 1
-WHERE ID = @ID
+        UPDATE  #Indexes
+        SET     IsProcessed = 1
+        WHERE   ID = @ID;
 
-SET @NewProcessCount = (SELECT COUNT(1) FROM #Indexes WHERE IsProcessed = 0)
+        SET @NewProcessCount = ( SELECT COUNT(1)
+                                 FROM   #Indexes
+                                 WHERE  IsProcessed = 0
+                               );
 
-END
+    END;
 
-SELECT *
-FROM #IndexScript
+SELECT  Script
+FROM    #IndexScript;
