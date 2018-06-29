@@ -101,11 +101,24 @@ WHILE @ProcessedCount > 0
         FROM    #IndexBreakDown
         WHERE   IsProcessed = 0;
 
-        SELECT  @PrefixSchemaTable = @Prefix + SchemaName + '_' + TableName
-        FROM    #IndexBreakDown
-        WHERE   SchemaName = @SchemaName
-                AND TableName = @TableName
-                AND IndexName = @IndexName;
+        IF @SchemaName <> 'dbo'
+            BEGIN 
+                SELECT  @PrefixSchemaTable = @Prefix + SchemaName + '_'
+                        + TableName
+                FROM    #IndexBreakDown
+                WHERE   SchemaName = @SchemaName
+                        AND TableName = @TableName
+                        AND IndexName = @IndexName;
+            END;
+
+        IF @SchemaName = 'dbo'
+            BEGIN 
+                SELECT  @PrefixSchemaTable = @Prefix + '_' + TableName
+                FROM    #IndexBreakDown
+                WHERE   SchemaName = @SchemaName
+                        AND TableName = @TableName
+                        AND IndexName = @IndexName;
+            END;
 
         SET @Names = '';
 
