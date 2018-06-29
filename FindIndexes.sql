@@ -259,5 +259,43 @@ CREATE NONCLUSTERED INDEX ' + @NewIndexName + ' ON ' + @PrefixSchemaTable + '
 
     END;
 
+
+CREATE TABLE #DropIndex
+(
+	Script VARCHAR(MAX)
+)
+
+UPDATE #IndexBreakDown
+SET IsProcessed = 0
+
+SET @NewProcessCount = 1
+
+WHILE @NewProcessCount > 0
+BEGIN
+
+SET @SchemaName = NULL
+SET @TableName = NULL
+SET @IndexName = NULL
+SET @ID = NULL
+
+SELECT TOP 1 @SchemaName = SchemaName, @TableName = TableName, @IndexName = IndexName, @ID = ID
+FROM #IndexBreakDown
+WHERE IsProcessed = 0
+
+INSERT INTO #DropIndex
+        ( Script )
+SELECT 'DROP INDEX ' + @IndexName + ' ON ' + @SchemaName + '.' + @TableName
+
+UPDATE #IndexBreakDown
+SET IsProcessed = 1
+WHERE ID = @ID
+
+SET @NewProcessCount = (SELECT COUNT(1) FROM #IndexBreakDown WHERE IsProcessed = 0)
+
+END
+
 SELECT  Script
 FROM    #IndexScript;
+
+SELECT Script
+FROM #DropIndex
