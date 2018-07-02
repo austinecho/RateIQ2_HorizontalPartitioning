@@ -229,6 +229,12 @@ WHILE @NewProcessCount > 0
                         ( Script
                         )
                         SELECT  '
+IF EXISTS ( SELECT 1 FROM sys.sysindexes WHERE name = '''+ @NewIndexName + ''' )
+BEGIN
+    DROP INDEX ' + @NewIndexName + ' ON ' + @SchemaName + '.' + @TableName
+	+ ' PRINT ''- Index [' + @NewIndexName + '] Dropped''; 
+END;
+
 CREATE NONCLUSTERED INDEX ' + @NewIndexName + ' ON ' + @PrefixSchemaTable + '
 ( ' + @ColumnNames + ')';
 
@@ -241,6 +247,12 @@ CREATE NONCLUSTERED INDEX ' + @NewIndexName + ' ON ' + @PrefixSchemaTable + '
                         ( Script
                         )
                         SELECT  '
+IF EXISTS ( SELECT 1 FROM sys.sysindexes WHERE name = '''+ @NewIndexName + ''' )
+BEGIN
+    DROP INDEX ' + @NewIndexName + ' ON ' + @SchemaName + '.' + @TableName
+	+ ' PRINT ''- Index [' + @NewIndexName + '] Dropped''; 
+END;
+
 CREATE NONCLUSTERED INDEX ' + @NewIndexName + ' ON ' + @PrefixSchemaTable + '
 ( ' + @ColumnNames + ') INCLUDE (' + @IncludeColumns + ')';
 
@@ -259,6 +271,8 @@ CREATE NONCLUSTERED INDEX ' + @NewIndexName + ' ON ' + @PrefixSchemaTable + '
 
     END;
 
+IF OBJECT_ID('tempdb..#DropIndex') IS NOT NULL
+    DROP TABLE #DropIndex;
 
 CREATE TABLE #DropIndex
 (
@@ -284,7 +298,11 @@ WHERE IsProcessed = 0
 
 INSERT INTO #DropIndex
         ( Script )
-SELECT 'DROP INDEX ' + @IndexName + ' ON ' + @SchemaName + '.' + @TableName
+SELECT 'IF EXISTS ( SELECT 1 FROM sys.sysindexes WHERE name = '''+ @IndexName + ''' )
+BEGIN
+    DROP INDEX ' + @IndexName + ' ON ' + @SchemaName + '.' + @TableName
+	+ ' PRINT ''- Index [' + @IndexName + '] Dropped''; 
+END;'
 
 UPDATE #IndexBreakDown
 SET IsProcessed = 1
