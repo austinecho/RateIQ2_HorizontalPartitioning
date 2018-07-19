@@ -1,12 +1,12 @@
 /*
 DataTeam
-databaseName Partitioning
+RateIQ2 Partitioning
 
 Validation
 
 Run in DB01VPRD Equivilant 
 */
-USE databaseName
+USE RateIQ2
 GO
 
 -- View Partitioned Table Information (Advanced) 

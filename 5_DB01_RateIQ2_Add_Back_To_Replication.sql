@@ -1,7 +1,7 @@
 /*----------------------------------------------------------------------------------
  INSTRUCTIONS 
 ------------------------------------------------------------------------------------
-1. Check databaseName replication is working (Replication Monitor tracer)
+1. Check RateIQ2 replication is working (Replication Monitor tracer)
 2. Pause replication (Stop Synchronizing in Replication Monitor)
 3. Run "PART 1" of the script
 4. Start Snapshot Agent in Replication Monitor and wait until it completed
@@ -11,7 +11,7 @@
 ----------------------------------------------------------------------------------*/
 
 -- PART 1
-USE [databaseName]
+USE [RateIQ2]
 GO
 
 DECLARE @subscriber sysname
@@ -35,22 +35,22 @@ BEGIN
 END;
 
 -- publication
-EXEC sp_changepublication @publication = 'PublicationdatabaseName', @property = 'allow_anonymous', @value = 'false'
-EXEC sp_changepublication @publication = 'PublicationdatabaseName', @property = 'immediate_sync', @value = 'false'
+EXEC sp_changepublication @publication = 'PublicationRateIQ2', @property = 'allow_anonymous', @value = 'false'
+EXEC sp_changepublication @publication = 'PublicationRateIQ2', @property = 'immediate_sync', @value = 'false'
 -- Make sure the DDL changes are carried over
-EXEC sp_changepublication @publication = 'PublicationdatabaseName', @property = 'replicate_ddl', @value = '1'
+EXEC sp_changepublication @publication = 'PublicationRateIQ2', @property = 'replicate_ddl', @value = '1'
 
 -- article
-EXEC sp_addarticle @publication = N'PublicationdatabaseName', @article = N'dbo.tableName', @source_owner = N'dbo', @source_object = N'tableName', @type = N'logbased', @description = N'', @creation_script = N'', @pre_creation_cmd = N'truncate', @schema_option = 0x000000000803109F, @identityrangemanagementoption = N'manual', @destination_table = N'tableName', @destination_owner = N'dbo', @status = 24, @vertical_partition = N'false', @ins_cmd = N'CALL [sp_MSins_dbotableName]', @del_cmd = N'CALL [sp_MSdel_dbotableName]', @upd_cmd = N'SCALL [sp_MSupd_dbotableName]', @force_invalidate_snapshot = 1
-EXEC sp_addsubscription @publication = N'PublicationdatabaseName', @subscriber = @subscriber, @destination_db = N'databaseName', @subscription_type = N'Push', @sync_type = N'automatic', @article = N'dbo.tableName', @subscriber_type = 0, @reserved='Internal'
+EXEC sp_addarticle @publication = N'PublicationRateIQ2', @article = N'Production.RatingDetail', @source_owner = N'dbo', @source_object = N'Production.RatingDetail', @type = N'logbased', @description = N'', @creation_script = N'', @pre_creation_cmd = N'truncate', @schema_option = 0x000000000803109F, @identityrangemanagementoption = N'manual', @destination_table = N'Production.RatingDetail', @destination_owner = N'dbo', @status = 24, @vertical_partition = N'false', @ins_cmd = N'CALL [sp_MSins_dboProduction.RatingDetail]', @del_cmd = N'CALL [sp_MSdel_dboProduction.RatingDetail]', @upd_cmd = N'SCALL [sp_MSupd_dboProduction.RatingDetail]', @force_invalidate_snapshot = 1
+EXEC sp_addsubscription @publication = N'PublicationRateIQ2', @subscriber = @subscriber, @destination_db = N'RateIQ2', @subscription_type = N'Push', @sync_type = N'automatic', @article = N'Production.RatingDetail', @subscriber_type = 0, @reserved='Internal'
 
 /*
 -- PART 2
 -- publication
-EXEC sp_changepublication @publication = 'PublicationdatabaseName', @property = 'immediate_sync', @value = 'true'
-EXEC sp_changepublication @publication = 'PublicationdatabaseName', @property = 'allow_anonymous', @value = 'true'
+EXEC sp_changepublication @publication = 'PublicationRateIQ2', @property = 'immediate_sync', @value = 'true'
+EXEC sp_changepublication @publication = 'PublicationRateIQ2', @property = 'allow_anonymous', @value = 'true'
  --Make sure the DDL changes are not carried over
-EXEC sp_changepublication @publication = 'PublicationdatabaseName', @property = 'replicate_ddl', @value = '0'
+EXEC sp_changepublication @publication = 'PublicationRateIQ2', @property = 'replicate_ddl', @value = '0'
 */
 
 GO

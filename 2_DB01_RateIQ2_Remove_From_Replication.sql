@@ -12,5 +12,5 @@ GO
 SET TRANSACTION ISOLATION LEVEL READ COMMITTED;  
 GO 
 
-exec sys.sp_dropsubscription @publication = 'PublicationRateIQ2',@article = 'RatingDetail', @subscriber = N'all',@destination_db = N'all'
-exec sp_droparticle @publication = 'PublicationRateIQ2', @article = 'RatingDetail',@force_invalidate_snapshot = 0
+exec sys.sp_dropsubscription @publication = 'PublicationRateIQ2',@article = 'Production.RatingDetail', @subscriber = N'all',@destination_db = N'all'
+exec sp_droparticle @publication = 'PublicationRateIQ2', @article = 'Production.RatingDetail',@force_invalidate_snapshot = 0
