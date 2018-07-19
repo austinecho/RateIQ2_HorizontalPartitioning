@@ -5,7 +5,7 @@ Check if UQ index is needed for PKs (if it isn't identity)
 **** DB01  ****
 
 ** ChangeSet.RatingDetail **
-Date Column: CreateDate (1 year)
+Date Column: EffectiveDate (2 year)
 Clustered Index: CIX_ChangeSet_RatingDetail_EffectiveDate
 
 -- Current --

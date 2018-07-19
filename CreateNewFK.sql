@@ -50,6 +50,17 @@ CREATE TABLE #CreateFK
 	Script VARCHAR(MAX)
 )
 
+
+IF OBJECT_ID('tempdb..#TempFK') IS NOT NULL
+    DROP TABLE #TempFK;
+CREATE TABLE #TempFK
+    (
+      OldFK VARCHAR(200) ,
+      NewFK VARCHAR(200) ,
+	  TableName VARCHAR(200) ,
+      IsProcessed BIT DEFAULT 0
+    ); 
+
 WHILE @ProcessCount > 0
 BEGIN
    DECLARE @ID INT
@@ -63,11 +74,18 @@ BEGIN
    DECLARE @ReferenceColumnName VARCHAR(128)
 
 SELECT TOP 1 @SchemaName = SchemaName, @TableName = TableName, @ColumnName = ColumnName, @ReferenceSchemaName = ReferenceSchemaName, @ReferenceTableName = ReferenceTableName, @ReferenceColumnName = ColumnName,
-@ID = ID
+@ID = ID, @FKName = FKName
 FROM #FKs
 WHERE IsProcessed = 0
 
 SET @NewFKName = 'FK_' + @SchemaName + '_' + @TableName + '_' + @ReferenceSchemaName + '_' + @ReferenceTableName + '_' + @ReferenceColumnName 
+
+INSERT INTO #TempFK
+        ( OldFK ,
+          NewFK ,
+          TableName
+        )
+SELECT @FKName, @NewFKName, @SchemaName + '.' + @TableName
 
 INSERT INTO #CreateFK
         ( Script )
@@ -93,3 +111,79 @@ END
 
 SELECT Script
 FROM #CreateFK
+
+--==================================================================================================================================================================
+--==================================================================================================================================================================
+--==================================================================================================================================================================
+--==================================================================================================================================================================
+-- DROP FKs -- DROP FKs -- DROP FKs -- DROP FKs -- DROP FKs -- DROP FKs -- DROP FKs -- DROP FKs -- DROP FKs -- DROP FKs -- DROP FKs -- DROP FKs -- DROP FKs
+--==================================================================================================================================================================
+--==================================================================================================================================================================
+--==================================================================================================================================================================
+--==================================================================================================================================================================
+SET @ProcessCount = 1
+
+CREATE TABLE #FKOutPut ( FKOutPut VARCHAR(MAX) );
+
+INSERT INTO #FKOutPut
+SELECT '-- ===================================================================================================
+-- [REMOVE FK]
+-- ===================================================================================================
+PRINT ''*****************'';
+PRINT ''*** Remove FK ***'';
+PRINT ''*****************'';'
+
+WHILE @ProcessCount > 0
+    BEGIN
+
+        DECLARE @OldFK VARCHAR(200);
+        DECLARE @NewFK VARCHAR(200);
+		SET @TableName = ''
+
+        SELECT  @OldFK = OldFK ,
+                @NewFK = NewFK ,
+				@TableName = TableName
+        FROM    #TempFK
+        WHERE   IsProcessed = 0;
+
+        INSERT  INTO #FKOutPut
+                SELECT  'IF EXISTS (   SELECT 1
+              FROM   sys.foreign_keys
+              WHERE  name = ''' + @OldFK
+                        + '''
+                AND  parent_object_id = OBJECT_ID( N''' + @TableName
+                        + '''))
+BEGIN
+    ALTER TABLE ChangeSet.RatingDetail DROP CONSTRAINT ' + @OldFK + ';
+    PRINT ''- FK ' + @OldFK + ' Dropped'';
+END;
+ELSE IF EXISTS (   SELECT 1
+                   FROM   sys.foreign_keys
+                   WHERE  name = ''' + @NewFK
+                        + '''
+                     AND  parent_object_id = OBJECT_ID( N''' + @TableName
+                        + ''' ))
+	BEGIN
+	    ALTER TABLE ChangeSet.RatingDetail DROP CONSTRAINT ' + @NewFK + ';
+	    PRINT ''- FK [' + @NewFK + '] Dropped'' ;
+	END;
+ELSE
+BEGIN
+    PRINT ''!! WARNING: Foreign Key not found !!'';
+END;
+GO';
+
+        UPDATE  #TempFK
+        SET     IsProcessed = 1
+        WHERE   OldFK = @OldFK
+                AND NewFK = @NewFK;
+
+        SET @ProcessCount = ( SELECT  COUNT(1)
+                                FROM    #TempFK
+                                WHERE   IsProcessed = 0
+                              );
+
+    END;
+
+SELECT  FKOutPut
+FROM    #FKOutPut;
