@@ -41,8 +41,8 @@ EXEC sp_changepublication @publication = 'PublicationRateIQ2', @property = 'imme
 EXEC sp_changepublication @publication = 'PublicationRateIQ2', @property = 'replicate_ddl', @value = '1'
 
 -- article
-EXEC sp_addarticle @publication = N'PublicationRateIQ2', @article = N'Production.RatingDetail', @source_owner = N'dbo', @source_object = N'Production.RatingDetail', @type = N'logbased', @description = N'', @creation_script = N'', @pre_creation_cmd = N'truncate', @schema_option = 0x000000000803109F, @identityrangemanagementoption = N'manual', @destination_table = N'Production.RatingDetail', @destination_owner = N'dbo', @status = 24, @vertical_partition = N'false', @ins_cmd = N'CALL [sp_MSins_dboProduction.RatingDetail]', @del_cmd = N'CALL [sp_MSdel_dboProduction.RatingDetail]', @upd_cmd = N'SCALL [sp_MSupd_dboProduction.RatingDetail]', @force_invalidate_snapshot = 1
-EXEC sp_addsubscription @publication = N'PublicationRateIQ2', @subscriber = @subscriber, @destination_db = N'RateIQ2', @subscription_type = N'Push', @sync_type = N'automatic', @article = N'Production.RatingDetail', @subscriber_type = 0, @reserved='Internal'
+EXEC sp_addarticle @publication = N'PublicationRateIQ2', @article = N'RatingDetail', @source_owner = N'Production', @source_object = N'RatingDetail', @type = N'logbased', @description = N'', @creation_script = N'', @pre_creation_cmd = N'truncate', @schema_option = 0x000000000803109F, @identityrangemanagementoption = N'manual', @destination_table = N'RatingDetail', @destination_owner = N'Production', @status = 24, @vertical_partition = N'false', @ins_cmd = N'CALL [sp_MSins_ProductionRatingDetail]', @del_cmd = N'CALL [sp_MSdel_ProductionRatingDetail]', @upd_cmd = N'SCALL [sp_MSupd_ProductionRatingDetail]', @force_invalidate_snapshot = 1
+EXEC sp_addsubscription @publication = N'PublicationRateIQ2', @subscriber = @subscriber, @destination_db = N'RateIQ2', @subscription_type = N'Push', @sync_type = N'automatic', @article = N'RatingDetail', @subscriber_type = 0, @reserved='Internal'
 
 /*
 -- PART 2
