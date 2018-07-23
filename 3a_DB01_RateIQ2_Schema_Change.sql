@@ -34,6 +34,123 @@ ELSE IF ( SELECT @@SERVERNAME ) = 'DATATEAM4-DB01\DB01' BEGIN PRINT 'Running in 
 ELSE BEGIN PRINT 'ERROR: Server name not found. Process stopped.'; RETURN; END;
 
 --===================================================================================================
+--[REMOVE ALL INDEXES]
+--===================================================================================================
+
+IF EXISTS ( SELECT  1
+            FROM    sys.sysindexes
+            WHERE   name = 'IDX_Composite_RatingId_Org_Dest_EffDt_ExpDt_Direc_FrmWgt_ToWgt' )
+    BEGIN
+        DROP INDEX IDX_Composite_RatingId_Org_Dest_EffDt_ExpDt_Direc_FrmWgt_ToWgt ON [backup].RatingDetail;
+        PRINT '- Index [IDX_Composite_RatingId_Org_Dest_EffDt_ExpDt_Direc_FrmWgt_ToWgt] Dropped'; 
+    END;
+IF EXISTS ( SELECT  1
+            FROM    sys.sysindexes
+            WHERE   name = 'IDX_C_Composite_RatingId_Org_Dest_EffDt_ExpDt_Direc_FrmWgt_ToWgt' )
+    BEGIN
+        DROP INDEX IDX_C_Composite_RatingId_Org_Dest_EffDt_ExpDt_Direc_FrmWgt_ToWgt ON ChangeSet.RatingDetail;
+        PRINT '- Index [IDX_C_Composite_RatingId_Org_Dest_EffDt_ExpDt_Direc_FrmWgt_ToWgt] Dropped'; 
+    END;
+IF EXISTS ( SELECT  1
+            FROM    sys.sysindexes
+            WHERE   name = 'IDX_Composite_RatingId_Org_Dest_EffDt_ExpDt_Direc_FrmWgt_ToWgt' )
+    BEGIN
+        DROP INDEX IDX_Composite_RatingId_Org_Dest_EffDt_ExpDt_Direc_FrmWgt_ToWgt ON ChangeSet.RatingDetail;
+        PRINT '- Index [IDX_Composite_RatingId_Org_Dest_EffDt_ExpDt_Direc_FrmWgt_ToWgt] Dropped'; 
+    END;
+IF EXISTS ( SELECT  1
+            FROM    sys.sysindexes
+            WHERE   name = 'idx_ratingid_includes' )
+    BEGIN
+        DROP INDEX idx_ratingid_includes ON ChangeSet.RatingDetail;
+        PRINT '- Index [idx_ratingid_includes] Dropped'; 
+    END;
+IF EXISTS ( SELECT  1
+            FROM    sys.sysindexes
+            WHERE   name = 'IX_C_RatingDetail' )
+    BEGIN
+        DROP INDEX IX_C_RatingDetail ON ChangeSet.RatingDetail;
+        PRINT '- Index [IX_C_RatingDetail] Dropped'; 
+    END;
+IF EXISTS ( SELECT  1
+            FROM    sys.sysindexes
+            WHERE   name = 'IX_C_RatingDetail_Bulk2' )
+    BEGIN
+        DROP INDEX IX_C_RatingDetail_Bulk2 ON ChangeSet.RatingDetail;
+        PRINT '- Index [IX_C_RatingDetail_Bulk2] Dropped'; 
+    END;
+IF EXISTS ( SELECT  1
+            FROM    sys.sysindexes
+            WHERE   name = 'IX_C_RatingDetail_Bulk3' )
+    BEGIN
+        DROP INDEX IX_C_RatingDetail_Bulk3 ON ChangeSet.RatingDetail;
+        PRINT '- Index [IX_C_RatingDetail_Bulk3] Dropped'; 
+    END;
+IF EXISTS ( SELECT  1
+            FROM    sys.sysindexes
+            WHERE   name = 'IX_RatingDetail_INC' )
+    BEGIN
+        DROP INDEX IX_RatingDetail_INC ON ChangeSet.RatingDetail;
+        PRINT '- Index [IX_RatingDetail_INC] Dropped'; 
+    END;
+IF EXISTS ( SELECT  1
+            FROM    sys.sysindexes
+            WHERE   name = 'IX_RatingDetail_TariffPricingId' )
+    BEGIN
+        DROP INDEX IX_RatingDetail_TariffPricingId ON ChangeSet.RatingDetail;
+        PRINT '- Index [IX_RatingDetail_TariffPricingId] Dropped'; 
+    END;
+IF EXISTS ( SELECT  1
+            FROM    sys.sysindexes
+            WHERE   name = 'IDX_Composite_RatingId_Org_Dest_EffDt_ExpDt_Direc_FrmWgt_ToWgt' )
+    BEGIN
+        DROP INDEX IDX_Composite_RatingId_Org_Dest_EffDt_ExpDt_Direc_FrmWgt_ToWgt ON Production.RatingDetail;
+        PRINT '- Index [IDX_Composite_RatingId_Org_Dest_EffDt_ExpDt_Direc_FrmWgt_ToWgt] Dropped'; 
+    END;
+IF EXISTS ( SELECT  1
+            FROM    sys.sysindexes
+            WHERE   name = 'IDX_P_Composite_RatingId_Org_Dest_EffDt_ExpDt_Direc_FrmWgt_ToWgt' )
+    BEGIN
+        DROP INDEX IDX_P_Composite_RatingId_Org_Dest_EffDt_ExpDt_Direc_FrmWgt_ToWgt ON Production.RatingDetail;
+        PRINT '- Index [IDX_P_Composite_RatingId_Org_Dest_EffDt_ExpDt_Direc_FrmWgt_ToWgt] Dropped'; 
+    END;
+IF EXISTS ( SELECT  1
+            FROM    sys.sysindexes
+            WHERE   name = 'idx_P_ratingid_includes' )
+    BEGIN
+        DROP INDEX idx_P_ratingid_includes ON Production.RatingDetail;
+        PRINT '- Index [idx_P_ratingid_includes] Dropped'; 
+    END;
+IF EXISTS ( SELECT  1
+            FROM    sys.sysindexes
+            WHERE   name = 'IX_P_RatingDetail' )
+    BEGIN
+        DROP INDEX IX_P_RatingDetail ON Production.RatingDetail;
+        PRINT '- Index [IX_P_RatingDetail] Dropped'; 
+    END;
+IF EXISTS ( SELECT  1
+            FROM    sys.sysindexes
+            WHERE   name = 'IX_P_RatingDetail_Bulk2' )
+    BEGIN
+        DROP INDEX IX_P_RatingDetail_Bulk2 ON Production.RatingDetail;
+        PRINT '- Index [IX_P_RatingDetail_Bulk2] Dropped'; 
+    END;
+IF EXISTS ( SELECT  1
+            FROM    sys.sysindexes
+            WHERE   name = 'IX_P_RatingDetail_Bulk3' )
+    BEGIN
+        DROP INDEX IX_P_RatingDetail_Bulk3 ON Production.RatingDetail;
+        PRINT '- Index [IX_P_RatingDetail_Bulk3] Dropped'; 
+    END;
+IF EXISTS ( SELECT  1
+            FROM    sys.sysindexes
+            WHERE   name = 'IX_P_RatingDetail_TariffPricingId' )
+    BEGIN
+        DROP INDEX IX_P_RatingDetail_TariffPricingId ON Production.RatingDetail;
+        PRINT '- Index [IX_P_RatingDetail_TariffPricingId] Dropped'; 
+    END;
+
+--===================================================================================================
 --[REMOVE ALL PKs]
 --===================================================================================================
 PRINT '***************************';
@@ -273,6 +390,187 @@ ADD CONSTRAINT PK_backup_RatingDetail_EffectiveDate_RatingDetailId
     PRIMARY KEY NONCLUSTERED ( EffectiveDate, RatingDetailId)
     WITH ( SORT_IN_TEMPDB = ON, ONLINE = ON ) ON PS_RateIQ2_DATETIME_2Year(columnName);
 PRINT '- PK [PK_backup_RatingDetail_EffectiveDate_RatingDetailId] Created';
+
+--===================================================================================================
+--[CREATE INDEXES]
+--===================================================================================================
+
+IF EXISTS ( SELECT  1
+            FROM    sys.sysindexes
+            WHERE   name = 'IX_backup_RatingDetail_OriginId_DestinationId_FromWeight_ToWeight_EffectiveDate_ExpiryDate_RatingId_DirectionTypeId' )
+    BEGIN
+        DROP INDEX IX_backup_RatingDetail_OriginId_DestinationId_FromWeight_ToWeight_EffectiveDate_ExpiryDate_RatingId_DirectionTypeId ON [backup].RatingDetail;
+        PRINT '- Index [IX_backup_RatingDetail_OriginId_DestinationId_FromWeight_ToWeight_EffectiveDate_ExpiryDate_RatingId_DirectionTypeId] Dropped'; 
+    END;
+
+CREATE NONCLUSTERED INDEX IX_backup_RatingDetail_OriginId_DestinationId_FromWeight_ToWeight_EffectiveDate_ExpiryDate_RatingId_DirectionTypeId ON [backup].RatingDetail
+( OriginId, DestinationId, FromWeight, ToWeight, EffectiveDate, ExpiryDate, RatingId, DirectionTypeId);
+
+IF EXISTS ( SELECT  1
+            FROM    sys.sysindexes
+            WHERE   name = 'IX_ChangeSet_RatingDetail_OriginId_DestinationId_FromWeight_ToWeight_EffectiveDate_ExpiryDate_RatingId_DirectionTypeId' )
+    BEGIN
+        DROP INDEX IX_ChangeSet_RatingDetail_OriginId_DestinationId_FromWeight_ToWeight_EffectiveDate_ExpiryDate_RatingId_DirectionTypeId ON ChangeSet.RatingDetail;
+        PRINT '- Index [IX_ChangeSet_RatingDetail_OriginId_DestinationId_FromWeight_ToWeight_EffectiveDate_ExpiryDate_RatingId_DirectionTypeId] Dropped'; 
+    END;
+
+CREATE NONCLUSTERED INDEX IX_ChangeSet_RatingDetail_OriginId_DestinationId_FromWeight_ToWeight_EffectiveDate_ExpiryDate_RatingId_DirectionTypeId ON ChangeSet.RatingDetail
+( OriginId, DestinationId, FromWeight, ToWeight, EffectiveDate, ExpiryDate, RatingId, DirectionTypeId);
+
+IF EXISTS ( SELECT  1
+            FROM    sys.sysindexes
+            WHERE   name = 'IX_ChangeSet_RatingDetail_OriginId_DestinationId_FromWeight_ToWeight_EffectiveDate_ExpiryDate_RatingId_DirectionTypeId' )
+    BEGIN
+        DROP INDEX IX_ChangeSet_RatingDetail_OriginId_DestinationId_FromWeight_ToWeight_EffectiveDate_ExpiryDate_RatingId_DirectionTypeId ON ChangeSet.RatingDetail;
+        PRINT '- Index [IX_ChangeSet_RatingDetail_OriginId_DestinationId_FromWeight_ToWeight_EffectiveDate_ExpiryDate_RatingId_DirectionTypeId] Dropped'; 
+    END;
+
+CREATE NONCLUSTERED INDEX IX_ChangeSet_RatingDetail_OriginId_DestinationId_FromWeight_ToWeight_EffectiveDate_ExpiryDate_RatingId_DirectionTypeId ON ChangeSet.RatingDetail
+( OriginId, DestinationId, FromWeight, ToWeight, EffectiveDate, ExpiryDate, RatingId, DirectionTypeId);
+
+IF EXISTS ( SELECT  1
+            FROM    sys.sysindexes
+            WHERE   name = 'IX_ChangeSet_RatingDetail_RatingId_Incl' )
+    BEGIN
+        DROP INDEX IX_ChangeSet_RatingDetail_RatingId_Incl ON ChangeSet.RatingDetail;
+        PRINT '- Index [IX_ChangeSet_RatingDetail_RatingId_Incl] Dropped'; 
+    END;
+
+CREATE NONCLUSTERED INDEX IX_ChangeSet_RatingDetail_RatingId_Incl ON ChangeSet.RatingDetail
+( RatingId) INCLUDE (TariffPricingId);
+
+IF EXISTS ( SELECT  1
+            FROM    sys.sysindexes
+            WHERE   name = 'IX_ChangeSet_RatingDetail_RatingId_EffectiveDate_ExpiryDate_FromWeight_FromMiles_DirectionTypeId' )
+    BEGIN
+        DROP INDEX IX_ChangeSet_RatingDetail_RatingId_EffectiveDate_ExpiryDate_FromWeight_FromMiles_DirectionTypeId ON ChangeSet.RatingDetail;
+        PRINT '- Index [IX_ChangeSet_RatingDetail_RatingId_EffectiveDate_ExpiryDate_FromWeight_FromMiles_DirectionTypeId] Dropped'; 
+    END;
+
+CREATE NONCLUSTERED INDEX IX_ChangeSet_RatingDetail_RatingId_EffectiveDate_ExpiryDate_FromWeight_FromMiles_DirectionTypeId ON ChangeSet.RatingDetail
+( RatingId, EffectiveDate, ExpiryDate, FromWeight, FromMiles, DirectionTypeId);
+
+IF EXISTS ( SELECT  1
+            FROM    sys.sysindexes
+            WHERE   name = 'IX_ChangeSet_RatingDetail_OriginId' )
+    BEGIN
+        DROP INDEX IX_ChangeSet_RatingDetail_OriginId ON ChangeSet.RatingDetail;
+        PRINT '- Index [IX_ChangeSet_RatingDetail_OriginId] Dropped'; 
+    END;
+
+CREATE NONCLUSTERED INDEX IX_ChangeSet_RatingDetail_OriginId ON ChangeSet.RatingDetail
+( OriginId);
+
+IF EXISTS ( SELECT  1
+            FROM    sys.sysindexes
+            WHERE   name = 'IX_ChangeSet_RatingDetail_DestinationId' )
+    BEGIN
+        DROP INDEX IX_ChangeSet_RatingDetail_DestinationId ON ChangeSet.RatingDetail;
+        PRINT '- Index [IX_ChangeSet_RatingDetail_DestinationId] Dropped'; 
+    END;
+
+CREATE NONCLUSTERED INDEX IX_ChangeSet_RatingDetail_DestinationId ON ChangeSet.RatingDetail
+( DestinationId);
+
+IF EXISTS ( SELECT  1
+            FROM    sys.sysindexes
+            WHERE   name = 'IX_ChangeSet_RatingDetail_RatingId_DirectionTypeId_FromMiles_FromWeight_EffectiveDate_ExpiryDate_RatingDetailId_OriginId_Incl' )
+    BEGIN
+        DROP INDEX IX_ChangeSet_RatingDetail_RatingId_DirectionTypeId_FromMiles_FromWeight_EffectiveDate_ExpiryDate_RatingDetailId_OriginId_Incl ON ChangeSet.RatingDetail;
+        PRINT '- Index [IX_ChangeSet_RatingDetail_RatingId_DirectionTypeId_FromMiles_FromWeight_EffectiveDate_ExpiryDate_RatingDetailId_OriginId_Incl] Dropped'; 
+    END;
+
+CREATE NONCLUSTERED INDEX IX_ChangeSet_RatingDetail_RatingId_DirectionTypeId_FromMiles_FromWeight_EffectiveDate_ExpiryDate_RatingDetailId_OriginId_Incl ON ChangeSet.RatingDetail
+( RatingId, DirectionTypeId, FromMiles, FromWeight, EffectiveDate, ExpiryDate, RatingDetailId, OriginId, OriginType, DestinationId, DestinationType, ToWeight, ToMiles) INCLUDE (FakId_TariffPricingId_BreakPricingId);
+
+IF EXISTS ( SELECT  1
+            FROM    sys.sysindexes
+            WHERE   name = 'IX_ChangeSet_RatingDetail_TariffPricingId' )
+    BEGIN
+        DROP INDEX IX_ChangeSet_RatingDetail_TariffPricingId ON ChangeSet.RatingDetail;
+        PRINT '- Index [IX_ChangeSet_RatingDetail_TariffPricingId] Dropped'; 
+    END;
+
+CREATE NONCLUSTERED INDEX IX_ChangeSet_RatingDetail_TariffPricingId ON ChangeSet.RatingDetail
+( TariffPricingId);
+
+IF EXISTS ( SELECT  1
+            FROM    sys.sysindexes
+            WHERE   name = 'IX_Production_RatingDetail_OriginId_DestinationId_FromWeight_ToWeight_EffectiveDate_ExpiryDate_RatingId_DirectionTypeId' )
+    BEGIN
+        DROP INDEX IX_Production_RatingDetail_OriginId_DestinationId_FromWeight_ToWeight_EffectiveDate_ExpiryDate_RatingId_DirectionTypeId ON Production.RatingDetail;
+        PRINT '- Index [IX_Production_RatingDetail_OriginId_DestinationId_FromWeight_ToWeight_EffectiveDate_ExpiryDate_RatingId_DirectionTypeId] Dropped'; 
+    END;
+
+CREATE NONCLUSTERED INDEX IX_Production_RatingDetail_OriginId_DestinationId_FromWeight_ToWeight_EffectiveDate_ExpiryDate_RatingId_DirectionTypeId ON Production.RatingDetail
+( OriginId, DestinationId, FromWeight, ToWeight, EffectiveDate, ExpiryDate, RatingId, DirectionTypeId);
+
+IF EXISTS ( SELECT  1
+            FROM    sys.sysindexes
+            WHERE   name = 'IX_Production_RatingDetail_OriginId_DestinationId_FromWeight_ToWeight_EffectiveDate_ExpiryDate_RatingId_DirectionTypeId' )
+    BEGIN
+        DROP INDEX IX_Production_RatingDetail_OriginId_DestinationId_FromWeight_ToWeight_EffectiveDate_ExpiryDate_RatingId_DirectionTypeId ON Production.RatingDetail;
+        PRINT '- Index [IX_Production_RatingDetail_OriginId_DestinationId_FromWeight_ToWeight_EffectiveDate_ExpiryDate_RatingId_DirectionTypeId] Dropped'; 
+    END;
+
+CREATE NONCLUSTERED INDEX IX_Production_RatingDetail_OriginId_DestinationId_FromWeight_ToWeight_EffectiveDate_ExpiryDate_RatingId_DirectionTypeId ON Production.RatingDetail
+( OriginId, DestinationId, FromWeight, ToWeight, EffectiveDate, ExpiryDate, RatingId, DirectionTypeId);
+
+IF EXISTS ( SELECT  1
+            FROM    sys.sysindexes
+            WHERE   name = 'IX_Production_RatingDetail_OriginId' )
+    BEGIN
+        DROP INDEX IX_Production_RatingDetail_OriginId ON Production.RatingDetail;
+        PRINT '- Index [IX_Production_RatingDetail_OriginId] Dropped'; 
+    END;
+
+CREATE NONCLUSTERED INDEX IX_Production_RatingDetail_OriginId ON Production.RatingDetail
+( OriginId);
+
+IF EXISTS ( SELECT  1
+            FROM    sys.sysindexes
+            WHERE   name = 'IX_Production_RatingDetail_DestinationId' )
+    BEGIN
+        DROP INDEX IX_Production_RatingDetail_DestinationId ON Production.RatingDetail;
+        PRINT '- Index [IX_Production_RatingDetail_DestinationId] Dropped'; 
+    END;
+
+CREATE NONCLUSTERED INDEX IX_Production_RatingDetail_DestinationId ON Production.RatingDetail
+( DestinationId);
+
+IF EXISTS ( SELECT  1
+            FROM    sys.sysindexes
+            WHERE   name = 'IX_Production_RatingDetail_RatingId_Incl' )
+    BEGIN
+        DROP INDEX IX_Production_RatingDetail_RatingId_Incl ON Production.RatingDetail;
+        PRINT '- Index [IX_Production_RatingDetail_RatingId_Incl] Dropped'; 
+    END;
+
+CREATE NONCLUSTERED INDEX IX_Production_RatingDetail_RatingId_Incl ON Production.RatingDetail
+( RatingId) INCLUDE (TariffPricingId);
+
+IF EXISTS ( SELECT  1
+            FROM    sys.sysindexes
+            WHERE   name = 'IX_Production_RatingDetail_RatingId_EffectiveDate_FromWeight_FromMiles_DirectionTypeId' )
+    BEGIN
+        DROP INDEX IX_Production_RatingDetail_RatingId_EffectiveDate_FromWeight_FromMiles_DirectionTypeId ON Production.RatingDetail;
+        PRINT '- Index [IX_Production_RatingDetail_RatingId_EffectiveDate_FromWeight_FromMiles_DirectionTypeId] Dropped'; 
+    END;
+
+CREATE NONCLUSTERED INDEX IX_Production_RatingDetail_RatingId_EffectiveDate_FromWeight_FromMiles_DirectionTypeId ON Production.RatingDetail
+( RatingId, EffectiveDate, FromWeight, FromMiles, DirectionTypeId);
+
+IF EXISTS ( SELECT  1
+            FROM    sys.sysindexes
+            WHERE   name = 'IX_Production_RatingDetail_TariffPricingId' )
+    BEGIN
+        DROP INDEX IX_Production_RatingDetail_TariffPricingId ON Production.RatingDetail;
+        PRINT '- Index [IX_Production_RatingDetail_TariffPricingId] Dropped'; 
+    END;
+
+CREATE NONCLUSTERED INDEX IX_Production_RatingDetail_TariffPricingId ON Production.RatingDetail
+( TariffPricingId);
+
 
 --===================================================================================================
 --[UPDATE STATS]
