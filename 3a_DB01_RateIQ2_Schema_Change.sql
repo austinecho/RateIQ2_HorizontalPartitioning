@@ -50,7 +50,7 @@ IF EXISTS (   SELECT 1
 				AND  name = N'PK_RatingDetail'
           )
 BEGIN    
-	ALTER TABLE ChangeSet.RatingDetail DROP CONSTRAINT PK_tblLoadCustomer;
+	ALTER TABLE ChangeSet.RatingDetail DROP CONSTRAINT PK_RatingDetail;
     PRINT '- PK [PK_RatingDetail] Dropped';
 END;
 
@@ -63,7 +63,7 @@ IF EXISTS (   SELECT 1
 				AND  name = N'PK_RatingDetail'
           )
 BEGIN    
-	ALTER TABLE Production.RatingDetail DROP CONSTRAINT PK_tblLoadCustomer;
+	ALTER TABLE Production.RatingDetail DROP CONSTRAINT PK_RatingDetail;
     PRINT '- PK [PK_RatingDetail] Dropped';
 END;
 
@@ -76,7 +76,7 @@ IF EXISTS (   SELECT 1
 				AND  name = N'PK_RatingDetail'
           )
 BEGIN    
-	ALTER TABLE [backup].RatingDetail DROP CONSTRAINT PK_tblLoadCustomer;
+	ALTER TABLE [backup].RatingDetail DROP CONSTRAINT PK_RatingDetail;
     PRINT '- PK [PK_RatingDetail] Dropped';
 END;
 
@@ -119,6 +119,7 @@ BEGIN
 END;
 GO
 
+PRINT 'Working on table [Production].[RatingDetail] ...';
 IF EXISTS (   SELECT 1
                   FROM   sys.default_constraints
                   WHERE  name = 'DF_Production_RatingDetail_EffectiveDate'
@@ -148,6 +149,7 @@ BEGIN
 END;
 GO
 
+PRINT 'Working on table [backup].[RatingDetail] ...';
 IF EXISTS (   SELECT 1
                   FROM   sys.default_constraints
                   WHERE  name = 'DF_backup_RatingDetail_EffectiveDate'
@@ -199,6 +201,7 @@ ON ChangeSet.RatingDetail ( EffectiveDate ASC )
 WITH ( SORT_IN_TEMPDB = ON, ONLINE = ON ) ON PS_RateIQ2_DATETIME_2Year(EffectiveDate);
 PRINT '- Index [CIX_ChangeSet_RatingDetail_EffectiveDate] Created';
 
+PRINT 'Working on table [Production].[RatingDetail] ...';
 IF EXISTS ( SELECT 1 FROM sys.sysindexes WHERE name = 'CIX_Production_RatingDetail_EffectiveDate' )
 BEGIN
     DROP INDEX CIX_Production_RatingDetail_EffectiveDate ON Production.RatingDetail;
@@ -210,6 +213,7 @@ ON Production.RatingDetail ( EffectiveDate ASC )
 WITH ( SORT_IN_TEMPDB = ON, ONLINE = ON ) ON PS_RateIQ2_DATETIME_2Year(EffectiveDate);
 PRINT '- Index [CIX_Production_RatingDetail_EffectiveDate] Created';
 
+PRINT 'Working on table [backup].[RatingDetail] ...';
 IF EXISTS ( SELECT 1 FROM sys.sysindexes WHERE name = 'CIX_backup_RatingDetail_EffectiveDate' )
 BEGIN
     DROP INDEX CIX_backup_RatingDetail_EffectiveDate ON [backup].RatingDetail;
@@ -232,41 +236,43 @@ PRINT '******************';
 --************************************************
 PRINT 'Working on table [ChangeSet].[RatingDetail] ...';
 
-IF EXISTS ( SELECT 1 FROM sys.sysindexes WHERE name = 'PK_ChangeSet_RatingDetail_EffectiveDate__RatingDetailId' )
+IF EXISTS ( SELECT 1 FROM sys.sysindexes WHERE name = 'PK_ChangeSet_RatingDetail_EffectiveDate_RatingDetailId' )
 BEGIN
-    ALTER TABLE ChangeSet.RatingDetail DROP CONSTRAINT PK_ChangeSet_RatingDetail_EffectiveDate__RatingDetailId;
-	PRINT '- PK [PK_ChangeSet_RatingDetail_EffectiveDate__RatingDetailId] Dropped';
+    ALTER TABLE ChangeSet.RatingDetail DROP CONSTRAINT PK_ChangeSet_RatingDetail_EffectiveDate_RatingDetailId;
+	PRINT '- PK [PK_ChangeSet_RatingDetail_EffectiveDate_RatingDetailId] Dropped';
 END;
 
 ALTER TABLE ChangeSet.RatingDetail
-ADD CONSTRAINT PK_ChangeSet_RatingDetail_EffectiveDate__RatingDetailId
+ADD CONSTRAINT PK_ChangeSet_RatingDetail_EffectiveDate_RatingDetailId
     PRIMARY KEY NONCLUSTERED ( EffectiveDate, RatingDetailId)
     WITH ( SORT_IN_TEMPDB = ON, ONLINE = ON ) ON PS_RateIQ2_DATETIME_2Year(columnName);
-PRINT '- PK [PK_ChangeSet_RatingDetail_EffectiveDate__RatingDetailId] Created';
+PRINT '- PK [PK_ChangeSet_RatingDetail_EffectiveDate_RatingDetailId] Created';
 
-IF EXISTS ( SELECT 1 FROM sys.sysindexes WHERE name = 'PK_Production_RatingDetail_EffectiveDate__RatingDetailId' )
+PRINT 'Working on table [Production].[RatingDetail] ...';
+IF EXISTS ( SELECT 1 FROM sys.sysindexes WHERE name = 'PK_Production_RatingDetail_EffectiveDate_RatingDetailId' )
 BEGIN
-    ALTER TABLE Production.RatingDetail DROP CONSTRAINT PK_Production_RatingDetail_EffectiveDate__RatingDetailId;
-	PRINT '- PK [PK_Production_RatingDetail_EffectiveDate__RatingDetailId] Dropped';
+    ALTER TABLE Production.RatingDetail DROP CONSTRAINT PK_Production_RatingDetail_EffectiveDate_RatingDetailId;
+	PRINT '- PK [PK_Production_RatingDetail_EffectiveDate_RatingDetailId] Dropped';
 END;
 
 ALTER TABLE Production.RatingDetail
-ADD CONSTRAINT PK_Production_RatingDetail_EffectiveDate__RatingDetailId
+ADD CONSTRAINT PK_Production_RatingDetail_EffectiveDate_RatingDetailId
     PRIMARY KEY NONCLUSTERED ( EffectiveDate, RatingDetailId)
     WITH ( SORT_IN_TEMPDB = ON, ONLINE = ON ) ON PS_RateIQ2_DATETIME_2Year(columnName);
-PRINT '- PK [PK_Production_RatingDetail_EffectiveDate__RatingDetailId] Created';
+PRINT '- PK [PK_Production_RatingDetail_EffectiveDate_RatingDetailId] Created';
 
-IF EXISTS ( SELECT 1 FROM sys.sysindexes WHERE name = 'PK_backup_RatingDetail_EffectiveDate__RatingDetailId' )
+PRINT 'Working on table [backup].[RatingDetail] ...';
+IF EXISTS ( SELECT 1 FROM sys.sysindexes WHERE name = 'PK_backup_RatingDetail_EffectiveDate_RatingDetailId' )
 BEGIN
-    ALTER TABLE [backup].RatingDetail DROP CONSTRAINT PK_backup_RatingDetail_EffectiveDate__RatingDetailId;
-	PRINT '- PK [PK_backup_RatingDetail_EffectiveDate__RatingDetailId] Dropped';
+    ALTER TABLE [backup].RatingDetail DROP CONSTRAINT PK_backup_RatingDetail_EffectiveDate_RatingDetailId;
+	PRINT '- PK [PK_backup_RatingDetail_EffectiveDate_RatingDetailId] Dropped';
 END;
 
 ALTER TABLE [backup].RatingDetail
-ADD CONSTRAINT PK_backup_RatingDetail_EffectiveDate__RatingDetailId
+ADD CONSTRAINT PK_backup_RatingDetail_EffectiveDate_RatingDetailId
     PRIMARY KEY NONCLUSTERED ( EffectiveDate, RatingDetailId)
     WITH ( SORT_IN_TEMPDB = ON, ONLINE = ON ) ON PS_RateIQ2_DATETIME_2Year(columnName);
-PRINT '- PK [PK_backup_RatingDetail_EffectiveDate__RatingDetailId] Created';
+PRINT '- PK [PK_backup_RatingDetail_EffectiveDate_RatingDetailId] Created';
 
 --===================================================================================================
 --[UPDATE STATS]
