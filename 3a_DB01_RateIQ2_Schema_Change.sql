@@ -362,7 +362,7 @@ END;
 ALTER TABLE ChangeSet.RatingDetail
 ADD CONSTRAINT PK_ChangeSet_RatingDetail_EffectiveDate_RatingDetailId
     PRIMARY KEY NONCLUSTERED ( EffectiveDate, RatingDetailId)
-    WITH ( SORT_IN_TEMPDB = ON, ONLINE = ON ) ON PS_RateIQ2_DATETIME_2Year(columnName);
+    WITH ( SORT_IN_TEMPDB = ON, ONLINE = ON ) ON PS_RateIQ2_DATETIME_2Year(EffectiveDate);
 PRINT '- PK [PK_ChangeSet_RatingDetail_EffectiveDate_RatingDetailId] Created';
 
 PRINT 'Working on table [Production].[RatingDetail] ...';
@@ -375,7 +375,7 @@ END;
 ALTER TABLE Production.RatingDetail
 ADD CONSTRAINT PK_Production_RatingDetail_EffectiveDate_RatingDetailId
     PRIMARY KEY NONCLUSTERED ( EffectiveDate, RatingDetailId)
-    WITH ( SORT_IN_TEMPDB = ON, ONLINE = ON ) ON PS_RateIQ2_DATETIME_2Year(columnName);
+    WITH ( SORT_IN_TEMPDB = ON, ONLINE = ON ) ON PS_RateIQ2_DATETIME_2Year(EffectiveDate);
 PRINT '- PK [PK_Production_RatingDetail_EffectiveDate_RatingDetailId] Created';
 
 PRINT 'Working on table [backup].[RatingDetail] ...';
@@ -388,7 +388,7 @@ END;
 ALTER TABLE [backup].RatingDetail
 ADD CONSTRAINT PK_backup_RatingDetail_EffectiveDate_RatingDetailId
     PRIMARY KEY NONCLUSTERED ( EffectiveDate, RatingDetailId)
-    WITH ( SORT_IN_TEMPDB = ON, ONLINE = ON ) ON PS_RateIQ2_DATETIME_2Year(columnName);
+    WITH ( SORT_IN_TEMPDB = ON, ONLINE = ON ) ON PS_RateIQ2_DATETIME_2Year(EffectiveDate);
 PRINT '- PK [PK_backup_RatingDetail_EffectiveDate_RatingDetailId] Created';
 
 --===================================================================================================
