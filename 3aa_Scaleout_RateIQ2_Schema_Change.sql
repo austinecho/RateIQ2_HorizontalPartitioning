@@ -28,8 +28,8 @@ PRINT '********************';
 PRINT '!!! Script START !!!';
 PRINT '********************';
 
-IF ( SELECT @@SERVERNAME ) = 'DB01VPRD' BEGIN PRINT 'Running in Environment DB01VPRD...'; END;
-ELSE IF ( SELECT @@SERVERNAME ) = 'QA4-DB01' BEGIN PRINT 'Running in Environment QA4-DB01...'; END;
+IF ( SELECT @@SERVERNAME ) IN ('RATEIQSQL5','VMRATEIQ1','VMRATEIQ3','VMRATEIQ5') BEGIN PRINT 'Running in Environment RateIQ2ScaleOut...'; END;
+ELSE IF ( SELECT @@SERVERNAME ) = 'VMQA3-RATEIQ2A' BEGIN PRINT 'Running in Environment VMQA3-RATEIQ2A...'; END;
 ELSE IF ( SELECT @@SERVERNAME ) = 'DATATEAM4-DB01\DB01' BEGIN PRINT 'Running in Environment DATATEAM4-DB01\DB01...'; END;
 ELSE BEGIN PRINT 'ERROR: Server name not found. Process stopped.'; RETURN; END;
 
